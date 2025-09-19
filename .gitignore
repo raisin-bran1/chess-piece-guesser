@@ -1,5 +1,6 @@
 *.zip
 *.pgn
+*.pgn.zst
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
