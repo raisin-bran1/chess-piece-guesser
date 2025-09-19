@@ -1,5 +1,5 @@
-.zip
-.pgn
+*.zip
+*.pgn
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
