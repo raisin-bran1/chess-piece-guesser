@@ -1,10 +1,8 @@
 import chess.pgn
 import random
 
-PGN_PATH = "data_processing/lichess_db_standard_rated_2013-01.pgn"
-
 # Data pre-processing
-def parse_games(pgn_path, filter = lambda headers: True): # filter function takes headers as input, returns something like headers.get("WhiteElo") >= 2000
+def parse_games(pgn_path: str, filter = lambda headers: True): # filter function takes headers as input, returns something like headers.get("WhiteElo") >= 2000
     offsets = [] # List to store the byte offset of every game
 
     print("Scanning PGN for game offsets...")
@@ -25,7 +23,7 @@ def parse_games(pgn_path, filter = lambda headers: True): # filter function take
     print(f"Found {len(offsets)} games.")
     return offsets
 
-def get_random_game(pgn_path, offsets):
+def get_random_game(pgn_path: str, offsets: list):
     random_offset = random.choice(offsets)
 
     with open(pgn_path) as pgn:
@@ -37,6 +35,15 @@ def get_random_game(pgn_path, offsets):
         
         return random_game
     
-def get_random_board(game):
-    # Generates FEN of random position in the game 
-    return "hi"
+def get_positions(game: chess.pgn.Game):
+    # Generates list of FEN positions from a game 
+    positions = []
+    board = game.board()
+    for move in game.mainline_moves():
+        positions.append(board.fen().split()[0])
+        board.push(move)
+    return positions
+
+def generate_random_position(pgn_path: str, offsets: list):
+    return random.choice(get_positions(get_random_game(pgn_path, offsets)))
+
