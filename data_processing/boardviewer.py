@@ -2,6 +2,8 @@ import chess
 import dataparser
 import tkinter as tk
 
+SQUARE_SIZE = 60
+
 def convert_to_pawns(fen):
     new_fen = ''
     for char in fen:
@@ -13,7 +15,7 @@ def convert_to_pawns(fen):
             new_fen += char
     return new_fen
 
-def draw_board(canvas, fen, colors = False): # draw board on tkinter canvas, colors = True show only piece colors
+def draw_board(canvas, fen, colors = False): # draw board on tkinter canvas, colors = True to show only piece colors
     """Reusable drawing function"""
     UNICODE_PIECES = {
         'r': '♜', 'n': '♞', 'b': '♝', 'q': '♛', 'k': '♚', 'p': '♟',
@@ -26,7 +28,7 @@ def draw_board(canvas, fen, colors = False): # draw board on tkinter canvas, col
         fen = convert_to_pawns(fen)
     board = chess.Board(fen)
     
-    square_size = 60
+    square_size = SQUARE_SIZE
     for rank in range(8):
         for file in range(8):
             x1, y1 = file * square_size, rank * square_size
@@ -37,32 +39,40 @@ def draw_board(canvas, fen, colors = False): # draw board on tkinter canvas, col
             piece = board.piece_at(chess.square(file, 7 - rank))
             if piece:
                 canvas.create_text(x1 + square_size/2, y1 + square_size/2, 
-                                   text=UNICODE_PIECES[piece.symbol()], font=("Arial", 35))
+                                   text=UNICODE_PIECES[piece.symbol()], font=("Arial", SQUARE_SIZE * 7 // 12))
 
-def show_tkinter(fen):
-    root = tk.Tk()
-    root.title("Boards")
-
-    # Create Frame 1 (Left)
-    frame1 = tk.Frame(root)
-    frame1.pack(side=tk.LEFT, padx=10, pady=10)
-    tk.Label(frame1, text="Colors").pack()
-    canvas1 = tk.Canvas(frame1, width=480, height=480)
+def create_canvas(root, name): # Creates board canvas in tkinter
+    frame = tk.Frame(root)
+    frame.pack(side=tk.LEFT, padx=10, pady=10)
+    tk.Label(frame, text = name).pack()
+    canvas1 = tk.Canvas(frame, width = SQUARE_SIZE * 8, height = SQUARE_SIZE * 8)
     canvas1.pack()
-    draw_board(canvas1, fen, colors = True)
+    return canvas1
 
-    # Create Frame 2 (Right)
-    frame2 = tk.Frame(root)
-    frame2.pack(side=tk.LEFT, padx=10, pady=10)
-    tk.Label(frame2, text="Pieces").pack()
-    canvas2 = tk.Canvas(frame2, width=480, height=480)
-    canvas2.pack()
-    draw_board(canvas2, fen)
+def create_canvases(root, names): # Creates list of canvases from list of canvas names
+    canvases = []
+    for name in names:
+        canvases.append(create_canvas(root, name))
+    return canvases
 
-    root.mainloop()
+def draw_boards(canvas, fen):
+    draw_board(canvas[0], fen, colors = True)
+    draw_board(canvas[1], "8/8/8/8/8/8/8/8")
+    draw_board(canvas[2], fen)
 
-# --- Usage ---
+def draw_random_boards(canvas):
+    fen = dataparser.generate_random_position(PGN_PATH, OFFSETS)
+    draw_boards(canvas, fen)
+
 PGN_PATH = "data_processing/lichess_db_standard_rated_2013-01.pgn"
-offsets = dataparser.parse_games(PGN_PATH)
-fen_str = dataparser.generate_random_position(PGN_PATH, offsets)
-show_tkinter(fen_str)
+OFFSETS = dataparser.parse_games(PGN_PATH)
+
+root = tk.Tk()
+root.title("Boards")
+
+canvas = create_canvases(root, ["Colors", "Prediction", "Real Board"])
+draw_random_boards(canvas)
+
+root.bind("<Button-1>", lambda event: draw_random_boards(canvas))
+
+root.mainloop()
