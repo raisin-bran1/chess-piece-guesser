@@ -1,6 +1,10 @@
 *.zip
 *.pgn
 *.pgn.zst
+*.pyc
+data/
+models/
+*.egg-info/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

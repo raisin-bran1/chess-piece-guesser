@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "chess_ml"
+version = "0.1.0"
+dependencies = [
+    "chess",
+    "numpy",
+    "torch",  # Assuming PyTorch for your neural networks
+]
+
+[tool.setuptools.packages.find]
+include = ["chess_ml*"]
+exclude = ["data", "models", "scripts"]

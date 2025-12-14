@@ -1,6 +1,6 @@
 import chess
-import dataparser
 import tkinter as tk
+import chess_ml.dataparser as dataparser
 
 SQUARE_SIZE = 60
 
@@ -56,23 +56,23 @@ def create_canvases(root, names): # Creates list of canvases from list of canvas
     return canvases
 
 def draw_boards(canvas, fen):
-    draw_board(canvas[0], fen, colors = True)
-    draw_board(canvas[1], "8/8/8/8/8/8/8/8")
-    draw_board(canvas[2], fen)
+    draw_board(canvas[0], fen, colors = True) # Colors only
+    draw_board(canvas[1], "8/8/8/8/8/8/8/8") # ML Predictions
+    draw_board(canvas[2], fen) # Real Position
 
-def draw_random_boards(canvas):
-    fen = dataparser.generate_random_position(PGN_PATH, OFFSETS)
+def draw_random_boards(canvas, pgn_path, offsets):
+    fen = dataparser.generate_random_position(pgn_path, offsets)
     draw_boards(canvas, fen)
 
-PGN_PATH = "data_processing/lichess_db_standard_rated_2013-01.pgn"
-OFFSETS = dataparser.parse_games(PGN_PATH)
+def view_tkinter(pgn_path):
+    offsets = dataparser.parse_games(pgn_path)
 
-root = tk.Tk()
-root.title("Boards")
+    root = tk.Tk()
+    root.title("Boards")
 
-canvas = create_canvases(root, ["Colors", "Prediction", "Real Board"])
-draw_random_boards(canvas)
+    canvas = create_canvases(root, ["Colors", "Prediction", "Real Board"])
+    draw_random_boards(canvas, pgn_path, offsets)
 
-root.bind("<Button-1>", lambda event: draw_random_boards(canvas))
+    root.bind("<Button-1>", lambda event: draw_random_boards(canvas, pgn_path, offsets))
 
-root.mainloop()
+    root.mainloop()
