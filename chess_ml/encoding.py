@@ -14,8 +14,7 @@ def fen_to_input(fen): # encodes each square as 1,0,0 / 0,1,0 / 0,0,1 for empty 
         elif char in '12345678':
             for i in range(int(char)):
                 encoding.extend([1, 0, 0])
-    print(encoding)
-    return torch.tensor(encoding)
+    return torch.tensor(encoding, dtype=torch.int8)
 
 def fen_to_target(fen): # encodes each square with numbers 0-12 representing empty, PRNBQK, prnbqk
     encoding = []
@@ -26,8 +25,7 @@ def fen_to_target(fen): # encodes each square with numbers 0-12 representing emp
             encoding.append(mapping[char])
         elif char in '12345678':
             encoding.extend([0 for i in range(int(char))])
-    print(encoding)
-    return torch.tensor(encoding)
+    return torch.tensor(encoding, dtype=torch.int8)
 
 def output_to_fen(output):
     pass # TO DO
