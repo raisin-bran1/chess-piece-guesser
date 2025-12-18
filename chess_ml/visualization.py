@@ -1,6 +1,8 @@
+# To visualize our model's predictions
+
 import chess
 import tkinter as tk
-import chess_ml.dataparser as dataparser
+from chess_ml.dataparser import Dataparser
 
 SQUARE_SIZE = 60
 
@@ -60,19 +62,19 @@ def draw_boards(canvas, fen):
     draw_board(canvas[1], "8/8/8/8/8/8/8/8") # ML Predictions
     draw_board(canvas[2], fen) # Real Position
 
-def draw_random_boards(canvas, pgn_path, offsets):
-    fen = dataparser.generate_random_position(pgn_path, offsets)
+def draw_random_boards(canvas, dataparser: Dataparser):
+    fen = dataparser.generate_random_position()
     draw_boards(canvas, fen)
 
 def view_tkinter(pgn_path):
-    offsets = dataparser.parse_games(pgn_path)
+    dataparser = Dataparser(pgn_path)
 
     root = tk.Tk()
     root.title("Boards")
 
     canvas = create_canvases(root, ["Colors", "Prediction", "Real Board"])
-    draw_random_boards(canvas, pgn_path, offsets)
+    draw_random_boards(canvas, dataparser)
 
-    root.bind("<Button-1>", lambda event: draw_random_boards(canvas, pgn_path, offsets))
+    root.bind("<Button-1>", lambda event: draw_random_boards(canvas, dataparser))
 
     root.mainloop()
