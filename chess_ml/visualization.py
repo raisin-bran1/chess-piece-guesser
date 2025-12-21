@@ -2,9 +2,12 @@
 
 import chess
 import tkinter as tk
+import torch
 from chess_ml.dataparser import Dataparser
+import chess_ml.encoding as enc
+import chess_ml.model as models
 
-SQUARE_SIZE = 60
+SQUARE_SIZE = 50
 
 def convert_to_pawns(fen):
     new_fen = ''
@@ -57,24 +60,32 @@ def create_canvases(root, names): # Creates list of canvases from list of canvas
         canvases.append(create_canvas(root, name))
     return canvases
 
-def draw_boards(canvas, fen):
+def get_model_prediction(model, fen):
+    with torch.inference_mode():
+        return enc.output_to_fen(model(enc.fen_to_input(fen).float()))
+
+def draw_boards(canvas, fen, model_pred):
     draw_board(canvas[0], fen, colors = True) # Colors only
-    draw_board(canvas[1], "8/8/8/8/8/8/8/8") # ML Predictions
+    draw_board(canvas[1], model_pred) # ML Predictions
     draw_board(canvas[2], fen) # Real Position
 
-def draw_random_boards(canvas, dataparser: Dataparser):
+def draw_random_boards(canvas, dataparser: Dataparser, model):
     fen = dataparser.generate_random_position()
-    draw_boards(canvas, fen)
+    draw_boards(canvas, fen, get_model_prediction(model, fen))
 
-def view_tkinter(pgn_path):
+def view_tkinter(pgn_path, model, model_path):
     dataparser = Dataparser(pgn_path)
+
+    state_dict = torch.load(f"models/{model_path}")
+    model.load_state_dict(state_dict)
+    model.eval()
 
     root = tk.Tk()
     root.title("Boards")
 
     canvas = create_canvases(root, ["Colors", "Prediction", "Real Board"])
-    draw_random_boards(canvas, dataparser)
+    draw_random_boards(canvas, dataparser, model)
 
-    root.bind("<Button-1>", lambda event: draw_random_boards(canvas, dataparser))
+    root.bind("<Button-1>", lambda event: draw_random_boards(canvas, dataparser, model))
 
     root.mainloop()

@@ -1,12 +1,11 @@
 import torch
 from chess_ml.train_utils import train_one_epoch
-from chess_ml.model import MLP
+import chess_ml.model as models
 from chess_ml.dataset import ChessDataset
 
 num_epochs = 5 # adjust
-layers = [192, 512, 256, 128, 64 * 13] # adjust
-model = MLP(layers)
-dataset = ChessDataset("data/train.pt", n_samples = 50000)
+model = models.MLP_basic() # adjust layers
+dataset = ChessDataset("data/train.pt", n_samples = 50000) # adjust n_samples
 train_loader = torch.utils.data.DataLoader(
     dataset,
     batch_size = 64, # adjust

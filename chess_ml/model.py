@@ -9,6 +9,12 @@ class MLP(nn.Module):
             if i != len(layers) - 1:
                 self.model.add_module(f"act{i}", nn.ReLU())
 
-    def forward(self, x): # turns (B, 892) into (B, 64, 13)
+    def forward(self, x): # turns (B, 64 * 13) into (B, 64, 13)
         X = self.model(x) 
+        if X.ndim == 1:
+            return X.view(64, 13)
         return X.view(X.size(0), 64, 13)
+    
+class MLP_basic(MLP):
+    def __init__(self):
+        super().__init__([192, 512, 256, 128, 64 * 13])
