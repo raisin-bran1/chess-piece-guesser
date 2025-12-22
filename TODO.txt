@@ -1,0 +1,7 @@
+Train some better models :D
+
+Other ideas:
+eval.py display: game accuracy over # moves played and square accuracy as a heatmap
+Add inputs/filter based on rating and move count. Can also use to make harder eval set.
+"Training viewer" depicting loss & accuracy curves on training & testing data
+Automate "metadata" system for trained models in /evals
