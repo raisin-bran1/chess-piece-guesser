@@ -28,9 +28,13 @@ def eval_model(model_path, model, dataset, batch = 1000, device = torch.device("
             correct_squares += correct_preds.size(0)
             total_perpiece += torch.unique(predictions, return_counts=True)[1]
             correct_perpiece += torch.unique(correct_preds, return_counts=True)[1]
+    
+    correct_pieces = correct_squares - int(correct_perpiece[0].item())
+    total_pieces = total_squares - int(total_perpiece[0].item())
 
     evaluation = f'''Boards: {(correct_boards / total_boards):.4f} ({correct_boards}/{total_boards})
 Squares: {(correct_squares / total_squares):.4f} ({correct_squares}/{total_squares})
+Pieces: {(correct_pieces / total_pieces):.4f} ({correct_pieces}/{total_pieces})
 '''
     pieces = ['Empty'] + list('PRNBQKprnbqk')
     for i in range(13):

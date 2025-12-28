@@ -3,12 +3,12 @@ from chess_ml.evaluation import eval_model
 import chess_ml.model as models
 from chess_ml.dataset import ChessDataset
 
-eval = eval_model(
-    model_path = "mlp_basic.pt",
-    model = models.MLP_basic(),
-    dataset = ChessDataset("data/eval_2013-02.pt", n_samples = 100000),
-    batch = 1000,
-    device = torch.device("cpu")
-)
-
-print(eval)
+for epoch in range(5, 25, 5):
+    eval = eval_model(
+        model_path = f"mlp_big_{epoch}.pt",
+        model = models.MLP_big(),
+        dataset = ChessDataset("data/eval_2013-02.pt", n_samples = 100000),
+        batch = 1000,
+        device = torch.device("cpu")
+    )
+    print(eval)

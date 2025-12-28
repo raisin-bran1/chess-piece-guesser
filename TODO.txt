@@ -1,7 +1,15 @@
-Train some better models :D
+1. Implement transformer
+2. Deeper eval investigation: board legality, game accuracy over # moves played, square accuracy heatmap, attention maps?
+3. Tidy up project: generate eval tables & plots, write up github
+
 
 Other ideas:
-eval.py display: game accuracy over # moves played and square accuracy as a heatmap
-Add inputs/filter based on rating and move count. Can also use to make harder eval set.
-"Training viewer" depicting loss & accuracy curves on training & testing data
+Add embeddings/filter based on rating and move count. Can also use to make harder eval set.
+Plot loss & accuracy curves on training & testing data
 Automate "metadata" system for trained models in /evals
+
+
+GPT's candidate SOTA approaches past standard transformer (prob won't bother):
+- Add structural loss (test with MLP and transformer)
+- Structured/graph transformer
+- Autoregressive models

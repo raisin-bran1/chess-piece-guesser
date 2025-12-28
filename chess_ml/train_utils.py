@@ -35,8 +35,8 @@ def train_model(model_name, model, dataset: torch.utils.data.Dataset, num_epochs
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate) # adjust lr
 
     print("Starting training!")
-    for epoch in range(num_epochs):
+    for epoch in range(1, num_epochs + 1):
         loss = train_one_epoch(model, train_loader, optimizer, device)
-        print(f"Epoch {epoch + 1}: loss = {loss:.4f}")
-
-    torch.save(model.state_dict(), f"models/{model_name}")
+        print(f"Epoch {epoch}: loss = {loss:.4f}")
+        if epoch % 5 == 0:
+            torch.save(model.state_dict(), f"models/{model_name}_{epoch}.pt")
