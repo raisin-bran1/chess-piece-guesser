@@ -3,10 +3,10 @@ import chess_ml.model as models
 
 def main():
     PGN_PATH = "data/lichess_db_standard_rated_2013-02.pgn"
-    MLP = models.ChessMLP_big()
-    TRANSFORMER = models.ChessTransformer()
-    MLP_PATH = "mlp_big.pt"
-    TRANSFORMER_PATH = "transformer.pt"
+    MLP = models.ChessMLP()
+    TRANSFORMER = models.ChessTransformer_medium()
+    MLP_PATH = "mlp_basic.pt"
+    TRANSFORMER_PATH = "transformer_medium.pt"
 
     view_tkinter(PGN_PATH, MLP, TRANSFORMER, MLP_PATH, TRANSFORMER_PATH)
 

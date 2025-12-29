@@ -113,7 +113,7 @@ class ChessMLP_big(MLP):
         X = self.model(x) 
         return X.view(X.size(0), 64, 13).squeeze()
 
-class ChessTransformer(Transformer):
+class ChessTransformer_small(Transformer):
     tokens = 64
     input_dim = 3
     def __init__(self):
@@ -131,7 +131,7 @@ class ChessTransformer(Transformer):
         x = x.view(x.size(0), self.tokens, self.input_dim)
         return super().embed(x)
     
-class ChessTransformer_big(Transformer):
+class ChessTransformer_medium(Transformer):
     tokens = 64
     input_dim = 3
     def __init__(self):
@@ -143,6 +143,24 @@ class ChessTransformer_big(Transformer):
             heads = 2, 
             mlp_layers = [64, 256, 64], 
             blocks = 4
+        )
+
+    def embed(self, x):
+        x = x.view(x.size(0), self.tokens, self.input_dim)
+        return super().embed(x)
+    
+class ChessTransformer_big(Transformer):
+    tokens = 64
+    input_dim = 3
+    def __init__(self):
+        super().__init__(
+            self.tokens, 
+            self.input_dim, 
+            embed_dim = 128, 
+            output_dim = 13, 
+            heads = 2, 
+            mlp_layers = [128, 512, 128], 
+            blocks = 8
         )
 
     def embed(self, x):

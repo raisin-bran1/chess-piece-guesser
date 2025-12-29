@@ -5,7 +5,6 @@ import tkinter as tk
 import torch
 from chess_ml.dataparser import Dataparser
 import chess_ml.encoding as enc
-import chess_ml.model as models
 
 SQUARE_SIZE = 30
 

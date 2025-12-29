@@ -4,17 +4,17 @@ import chess_ml.encoding as enc
 import torch
 from datetime import datetime
 
-def download_data(pgn_path, save_name = "train.pt"):
-    pgn_file = open(pgn_path, encoding="utf-8")
+def get_positions(game: chess.pgn.Game):
+    # Generates list of FEN positions from a game 
+    positions = []
+    board = game.board()
+    for move in game.mainline_moves():
+        positions.append(board.fen().split()[0])
+        board.push(move)
+    return positions
 
-    def get_positions(game: chess.pgn.Game):
-        # Generates list of FEN positions from a game 
-        positions = []
-        board = game.board()
-        for move in game.mainline_moves():
-            positions.append(board.fen().split()[0])
-            board.push(move)
-        return positions
+def download_data(pgn_path, save_name = "train.pt", move_filter = 0):
+    pgn_file = open(pgn_path, encoding="utf-8")
     
     print(f"Downloading {pgn_path}")
     input_tensors, target_tensors = [], []
@@ -22,7 +22,7 @@ def download_data(pgn_path, save_name = "train.pt"):
         game = chess.pgn.read_game(pgn_file)
         if game is None:
             break
-        for position in get_positions(game):
+        for position in get_positions(game)[move_filter:]:
             input_tensors.append(enc.fen_to_input(position))
             target_tensors.append(enc.fen_to_target(position))
     print(f"{len(input_tensors)} positions downloaded")
