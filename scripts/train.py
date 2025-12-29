@@ -4,8 +4,8 @@ import chess_ml.model as models
 from chess_ml.dataset import ChessDataset
 
 train_model(
-    model_name = "mlp_big",
-    model = models.MLP_big(),
+    model_name = "transformer",
+    model = models.ChessTransformer(),
     dataset = ChessDataset("data/train_2013-01.pt", n_samples = 100000),
     num_epochs = 20,
     batch = 128,

@@ -1,4 +1,4 @@
-1. Implement transformer
+1. Add autoregression
 2. Deeper eval investigation: board legality, game accuracy over # moves played, square accuracy heatmap, attention maps?
 3. Tidy up project: generate eval tables & plots, write up github
 

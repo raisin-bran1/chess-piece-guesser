@@ -7,7 +7,7 @@ from chess_ml.dataparser import Dataparser
 import chess_ml.encoding as enc
 import chess_ml.model as models
 
-SQUARE_SIZE = 50
+SQUARE_SIZE = 30
 
 def convert_to_pawns(fen):
     new_fen = ''
@@ -62,30 +62,35 @@ def create_canvases(root, names): # Creates list of canvases from list of canvas
 
 def get_model_prediction(model, fen):
     with torch.inference_mode():
-        return enc.output_to_fen(model(enc.fen_to_input(fen).float()))
+        return enc.output_to_fen(model(enc.fen_to_input(fen).float().unsqueeze(0)))
 
-def draw_boards(canvas, fen, model_pred):
+def draw_boards(canvas, fen, model1_pred, model2_pred):
     draw_board(canvas[0], fen, colors = True) # Colors only
-    draw_board(canvas[1], model_pred) # ML Predictions
-    draw_board(canvas[2], fen) # Real Position
+    draw_board(canvas[1], model1_pred) # MLP Predictions
+    draw_board(canvas[2], model2_pred) # Transformer Predictions
+    draw_board(canvas[3], fen) # Real Position
 
-def draw_random_boards(canvas, dataparser: Dataparser, model):
+def draw_random_boards(canvas, dataparser: Dataparser, model1, model2):
     fen = dataparser.generate_random_position()
-    draw_boards(canvas, fen, get_model_prediction(model, fen))
+    draw_boards(canvas, fen, get_model_prediction(model1, fen), get_model_prediction(model2, fen))
 
-def view_tkinter(pgn_path, model, model_path):
+def view_tkinter(pgn_path, model1, model2, model1_path, model2_path):
     dataparser = Dataparser(pgn_path)
 
-    state_dict = torch.load(f"models/{model_path}")
-    model.load_state_dict(state_dict)
-    model.eval()
+    state_dict = torch.load(f"models/{model1_path}")
+    model1.load_state_dict(state_dict)
+    model1.eval()
+
+    state_dict = torch.load(f"models/{model2_path}")
+    model2.load_state_dict(state_dict)
+    model2.eval()
 
     root = tk.Tk()
     root.title("Boards")
 
-    canvas = create_canvases(root, ["Colors", "Prediction", "Real Board"])
-    draw_random_boards(canvas, dataparser, model)
+    canvas = create_canvases(root, ["Colors", "MLP", "Transformer", "Real Board"])
+    draw_random_boards(canvas, dataparser, model1, model2)
 
-    root.bind("<Button-1>", lambda event: draw_random_boards(canvas, dataparser, model))
+    root.bind("<Button-1>", lambda event: draw_random_boards(canvas, dataparser, model1, model2))
 
     root.mainloop()
