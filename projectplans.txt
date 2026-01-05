@@ -1,0 +1,16 @@
+Evals:
+Board accuracy, square accuracy, piece (non-empty square) accuracy, accuracy per piece type
+Correct colors: self explanatory
+Regular pieces: 1 king, <= (8 pawns, 2 knights, 2 bishops, 2 rooks, 1 queen) for both colors
+Both correct colors & regular pieces
+Square accuracy heatmap
+
+
+My theories on issues with transformer / why it doesn't improve MLP much:
+Fixed token length + input and output are very "nice" (what MLP excels at)
+Low expressivity in vector embedding (mainly comes from a single added position matrix in the transformer)
+Loss function doesn't reward global consistency in both cases
+
+
+Next steps for improved performance:
+Attention score bias, global board token, structural loss, autoregression

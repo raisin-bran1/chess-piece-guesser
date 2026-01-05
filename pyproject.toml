@@ -8,7 +8,7 @@ version = "0.1.0"
 dependencies = [
     "chess",
     "numpy",
-    "torch",  # Assuming PyTorch for your neural networks
+    "torch"
 ]
 
 [tool.setuptools.packages.find]

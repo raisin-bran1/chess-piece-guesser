@@ -1,0 +1,23 @@
+Architecture: simple MLP with layers 64*3 -> 1532 -> 1024 -> 512 -> 64*13 (2.8M parameters)
+Hyperparameters: Trained on dataset of 100000 boards for 10 epochs, batch size 128
+Optimizer: Adam with learning rate 1e-3
+
+Default eval set (eval_2013-02.pt)
+    Boards: 0.1880 (18796/100000)
+    Squares: 0.9348 (5982422/6400000)
+    Pieces: 0.8270 (1914072/2314350)
+    Empty: 0.9958 (4068350/4085650)
+    P: 0.8955 (540279/603330)
+    R: 0.8647 (136257/157576)
+    N: 0.6984 (84259/120645)
+    B: 0.7134 (80132/112324)
+    Q: 0.6613 (41238/62356)
+    K: 0.7880 (79521/100912)
+    p: 0.8860 (538540/607823)
+    r: 0.8451 (134483/159130)
+    n: 0.7246 (78882/108860)
+    b: 0.7204 (82245/114164)
+    q: 0.6143 (42812/69693)
+    k: 0.7733 (75424/97537)
+
+Greater epoch #s (tested up to 20) don't yield better results

@@ -1,5 +1,0 @@
-1. Deeper eval investigation: board legality, game accuracy over # moves played, square accuracy heatmap, % of time getting correct color :skull:
-2. Tidy up project: generate eval tables & plots, write up github
-
-Other ideas:
-Implement structural loss / autoregression

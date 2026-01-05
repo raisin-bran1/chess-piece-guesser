@@ -4,7 +4,6 @@
 *.pyc
 data/
 models/
-evals/
 screenshots/
 *.egg-info/
 

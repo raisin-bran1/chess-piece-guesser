@@ -5,6 +5,8 @@ import math
 # Standard pytorch MLP
 
 class MLP(nn.Module):
+    name = "MLP"
+
     def __init__(self, layers: list[int]):
         super().__init__()
         self.model = nn.Sequential()
@@ -77,6 +79,8 @@ class TransformerBlock(nn.Module):
 # Embeds input, runs a # of transformer blocks, and a final linear output layer
 
 class Transformer(nn.Module):
+    name = "Transformer"
+
     def __init__(self, tokens, input_dim, embed_dim, output_dim, heads, mlp_layers, blocks):
         super().__init__()
         self.embed_matrix = nn.Linear(input_dim, embed_dim)
@@ -131,7 +135,7 @@ class ChessTransformer_small(Transformer):
         x = x.view(x.size(0), self.tokens, self.input_dim)
         return super().embed(x)
     
-class ChessTransformer_medium(Transformer):
+class ChessTransformer_basic(Transformer):
     tokens = 64
     input_dim = 3
     def __init__(self):
